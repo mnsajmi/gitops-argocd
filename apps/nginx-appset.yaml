@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: nginx-appset
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - cluster: https://kubernetes.default.svc
+            namespace: nginx-dev
+          - cluster: https://kubernetes.default.svc
+            namespace: nginx-prod
+  template:
+    metadata:
+      name: '{{namespace}}-nginx-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/<username>/gitops-argocd
+        targetRevision: main
+        path: nginx-app  # المجلد الموجود في الريبو
+      destination:
+        server: '{{cluster}}'
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
