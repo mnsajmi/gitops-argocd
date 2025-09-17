@@ -15,7 +15,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/kodekloudhub/gitops-argocd
+        repoURL: https://github.com/mnsajmi/gitops-argocd.git
         targetRevision: main
         path: solar-system
       destination:
