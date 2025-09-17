@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: solar-system-appset
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - cluster: https://kubernetes.default.svc
+            namespace: solar-system
+  template:
+    metadata:
+      name: solar-system-app
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/kodekloudhub/gitops-argocd
+        targetRevision: main
+        path: solar-system
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: solar-system
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
