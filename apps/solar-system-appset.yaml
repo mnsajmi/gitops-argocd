@@ -8,19 +8,21 @@ spec:
     - list:
         elements:
           - cluster: https://kubernetes.default.svc
-            namespace: solar-system
+            namespace: solar-system-dev
+          - cluster: https://kubernetes.default.svc
+            namespace: solar-system-prod
   template:
     metadata:
-      name: solar-system-app
+      name: '{{namespace}}-solar-system-app'
     spec:
       project: default
       source:
-        repoURL: https://github.com/kodekloudhub/gitops-argocd
+        repoURL: https://github.com/mnsajmi/gitops-argocd.git
         targetRevision: main
         path: solar-system
       destination:
-        server: https://kubernetes.default.svc
-        namespace: solar-system
+        server: '{{cluster}}'
+        namespace: '{{namespace}}'
       syncPolicy:
         automated:
           prune: true
