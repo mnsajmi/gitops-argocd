@@ -5,12 +5,10 @@ metadata:
   namespace: argocd
 spec:
   generators:
-    - list:
-        elements:
-          - cluster: https://kubernetes.default.svc
-            namespace: solar-system-dev
-          - cluster: https://kubernetes.default.svc
-            namespace: solar-system-prod
+    - clusters:
+        selector:
+          matchLabels:
+            environment: sandbox
   template:
     metadata:
       name: '{{namespace}}-solar-system-app'
